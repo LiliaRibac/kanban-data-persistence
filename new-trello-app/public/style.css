@@ -1,0 +1,54 @@
+body{
+    background-color:#bae1ff;
+    }
+
+.swimlane{
+    /* width: 50px; */
+    /* height: 100%; */
+    border:solid 1px black;
+    background-color: bisque;
+    flex-basis: 240px;
+    padding: 5px;
+    align-items: space-between;
+    margin:10px;
+   
+}
+
+.container{
+    display: flex;
+}
+
+
+.swimlane-name-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+input, button{
+    margin: 5px;
+
+    }
+
+.card{
+ background-color: white;
+ width: 95%;
+ border:solid 1px black;
+ margin-top: 5px;
+ padding: 5px;
+}
+
+.saveBtn,.editCardBtn, .editBtn{
+    border-radius: 25px 5px 25px;
+    background: whitesmoke;
+   /* display: inline-block; */
+    
+} 
+.editCardBtn{
+    /* display: none; */
+}
+
+.fas{
+ color:#67818A;
+
+}
+
