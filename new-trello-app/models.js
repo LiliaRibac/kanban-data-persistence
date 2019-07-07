@@ -6,7 +6,7 @@ const sql = new Sequelize('kanban-data-persistence', 'admin', 'admin', {
     host: 'Lily-Lenovo',
     port: 3306,
     dialect: 'mysql',
-   // operatorsAliases: false,
+    // operatorsAliases: false,
     pool: {
         max: 5,
         min: 0,
@@ -40,17 +40,47 @@ sql
 
 // NOTE: A model is like a "template" for an object
 exports.Swimlane = sql.define('swimlane', {
-    id: { type: Sequelize.INTEGER, allowNull: false, primaryKey: true},
-    title: {type: Sequelize.STRING},
-    wasDeleted: {type: Sequelize.BOOLEAN}
+    id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    title: {
+        type: Sequelize.STRING
+    },
+    isDeleted: {
+        type: Sequelize.BOOLEAN
+    }
+}, {
+  timestamps: false
 });
 
+
 exports.Card = sql.define('card', {
-    id: { type: Sequelize.INTEGER, allowNull: false, primaryKey: true},
-    title: {type: Sequelize.STRING},
-    description: {type: Sequelize.STRING},
-  	swimlaneId: {type: Sequelize.INTEGER}
-});
+    id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    title: {
+        type: Sequelize.STRING
+    },
+    description: {
+        type: Sequelize.STRING
+    },
+    swimlaneId: {
+        type: Sequelize.INTEGER
+    },
+    isDeleted: {
+        type: Sequelize.BOOLEAN
+    }
+}, {
+    timestamps: false
+  });
+
+
 
 // Swimlane:
 // id		title			wasDeleted		
