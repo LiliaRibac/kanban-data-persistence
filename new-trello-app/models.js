@@ -39,48 +39,66 @@ sql
 // 		 you must have a column that points to the other table
 
 // NOTE: A model is like a "template" for an object
-exports.Swimlane = sql.define('swimlane', {
-    id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    title: {
-        type: Sequelize.STRING
-    },
-    isDeleted: {
-        type: Sequelize.BOOLEAN
-    }
-}, {
-  timestamps: false
-});
 
 
-exports.Card = sql.define('card', {
-    id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    title: {
-        type: Sequelize.STRING
-    },
-    description: {
-        type: Sequelize.STRING
-    },
-    swimlaneId: {
-        type: Sequelize.INTEGER
-    },
-    isDeleted: {
-        type: Sequelize.BOOLEAN
-    }
-}, {
-    timestamps: false
+exports.Swimlane = function( sequelize, DataTypes ){
+  let Swimlane = sql.define('swimlane', {
+      id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          autoIncrement: true
+      },
+      title: {
+          type: Sequelize.STRING
+      },
+      isDeleted: {
+          type: Sequelize.BOOLEAN
+      }
+  }, {
+      timestamps: false
   });
+  
+  Swimlane.associate = function( models ){
+    //Swimlane.hasMany( models.Card, { foreignKey: 'swimlaneId', sourceKey: 'id' } );
+    Swimlane.hasMany( models.Card );
+  }
+  
+  return Swimlane;
+};
 
-
+exports.Card = function( sequelize, DataTypes ){
+  
+  let Card = sql.define('card', {
+      id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          autoIncrement: true
+      },
+      title: {
+          type: Sequelize.STRING
+      },
+      description: {
+          type: Sequelize.STRING
+      },
+      swimlaneId: {
+       type: Sequelize.INTEGER
+      },
+      isDeleted: {
+          type: Sequelize.BOOLEAN
+      }
+  }, {
+      timestamps: false
+  });
+ 
+  Card.associate = function( models ){
+    //Card.belongsTo( models.Swimlane, { foreignKey: 'swimlaneId', sourceKey: 'id' } );
+    Card.belongsTo( models.Swimlane );
+  }
+  
+  return Card;
+};
 
 // Swimlane:
 // id		title			wasDeleted		

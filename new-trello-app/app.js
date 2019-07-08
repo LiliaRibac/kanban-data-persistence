@@ -11,7 +11,8 @@ var path = require("path")
 var public = path.join(__dirname, 'public');
 
 let models = require("./models")
-
+models.Swimlane = models.Swimlane( );
+models.Card = models.Card( );
 console.log(models)
 
 let swimlaneCounter = 2;
@@ -63,25 +64,17 @@ app.get('/', function (req, res) {
 
 app.get("/api/swimlanes", (req, res) => {
     // TODO: Only show the swimlanes with isDeleted equal to false
-    /*
-    let newArray = swimlanes.filter((swimlane) => {
-        if (swimlane.isDeleted == false) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-
-    res.send(newArray);
-    */
-
     models.Swimlane.findAll({
             attributes: ['id', 'title', 'isDeleted'],
+      		include: [{
+              model: models.Card
+            }],
             where: {
                 isDeleted: false
             }
         })
         .then(swimlanes => {
+      		console.log( "swimlanes: ", swimlanes );
             // NOTE: What to do with the results of the SELECT
             res.send(swimlanes);
         })
@@ -246,27 +239,44 @@ app.delete('/api/cards/:id', (req, res) => {
 
 app.put('/api/swimlanes/:id', (req, res) => {
 
-    for (let i = 0; i < swimlanes.length; i++) {
-        if (swimlanes[i].id == req.params.id) {
-            swimlanes[i].title = req.body.title;
-        }
-    }
-    res.send(200);
+    models.Swimlane.findOne({where: { id: req.params.id } } ).then( ( swimlane ) => {
+    
+        if( swimlane != null ){
+            swimlane.title = req.body.title;
+            swimlane.save( ).then( ( ) => {
+                
+              res.send( req.params.id + "" );
+            } ).catch( ( error ) => {
+              console.log( error );
+              res.send( 500 );
+            } );
+          }else{
+            res.send( "Error: Swimlane not found" );  
+          }
+        } );
+      
+      
 
 })
 
 app.put('/api/cards/:id', (req, res) => {
-    for (let s = 0; s < swimlanes.length; s++) {
-        for (let c = 0; c < swimlanes[s].cards.length; c++) {
-            if (swimlanes[s].cards[c].id == req.params.id) {
-                swimlanes[s].cards[c].title = req.body.title;
-                swimlanes[s].cards[c].description = req.body.title.description;
-            }
+    models.Card.findOne({where: { id: req.params.id } } ).then( ( card ) => {
+    
+        if( card != null ){
+            card.title = req.body.title;
+            card.description = req.body.description;
+            card.save( ).then( ( ) => {
+                
+              res.send( req.params.id + "" );
+            } ).catch( ( error ) => {
+              console.log( error );
+              res.send( 500 );
+            } );
+        } else {
+          res.send( "Error: Card not found" );
         }
-    }
-    res.send(200);
-})
-
+     } );
+});
 
 
 
