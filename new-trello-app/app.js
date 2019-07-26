@@ -47,12 +47,12 @@ const swimlanes = [{
             id: 3,
             title: 'first card',
             description: "first description"
-            // other data below
+           
         }]
     }
 ]
 
-// TODO: create id gen
+
 
 app.use(express.static("public"));
 
@@ -63,7 +63,7 @@ app.get('/', function (req, res) {
 
 
 app.get("/api/swimlanes", (req, res) => {
-    // TODO: Only show the swimlanes with isDeleted equal to false
+  
     models.Swimlane.findAll({
             attributes: ['id', 'title', 'isDeleted'],
       		include: [{
@@ -75,7 +75,7 @@ app.get("/api/swimlanes", (req, res) => {
         })
         .then(swimlanes => {
       		console.log( "swimlanes: ", swimlanes );
-            // NOTE: What to do with the results of the SELECT
+          
             res.send(swimlanes);
         })
 
@@ -87,19 +87,9 @@ app.get("/api/swimlanes", (req, res) => {
 
 
 
-// NOTE: The curly brackets create a "variable" whose value comes from the URL
-// 		 The variable can be accessed as a member of req.params using the same name
 app.get("/api/swimlanes/:id", (req, res) => {
 
-    // let swimlane;
-
-    // for (let i = 0; i < swimlanes.length; i++) {
-    //     if (swimlanes[i].id == req.params.id) {
-    //         swimlane = swimlanes[i];
-    //     }
-    // }
-
-    //res.send(swimlane)
+   
     models.Swimlane.findOne({
             attributes: ['id', 'title', 'isDeleted'],
             where: {
@@ -108,7 +98,7 @@ app.get("/api/swimlanes/:id", (req, res) => {
             }
         })
         .then(swimlanes => {
-            // NOTE: What to do with the results of the SELECT
+     
             res.send(swimlanes);
         })
         .catch(error => {
@@ -224,19 +214,6 @@ app.delete('/api/cards/:id', (req, res) => {
     });
 
 
-// --------------------------------------------------------------
-// TODO: Update (put) route for updating/changing a swimlane
-// 1. Find the swimlane
-// 2. Set its properties equal to the properties of req.body
-// Example:
-// req.body.title should be a property. It depends on the "name" attributes
-// of the input elements in the HTML form.
-
-// TODO: Update (put) route for updating/changing a card
-
-// --------------------------------------------------------------
-
-
 app.put('/api/swimlanes/:id', (req, res) => {
 
     models.Swimlane.findOne({where: { id: req.params.id } } ).then( ( swimlane ) => {
@@ -282,73 +259,3 @@ app.put('/api/cards/:id', (req, res) => {
 
 app.listen(3000, () => console.log('Listening on port 3000...'))
 
-
-/*
-
-
-// -------------------------------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-//get all users route
-server.get('/api/swimlanes/', (req, res, next) => {
-  
-    models.Swimlane.findAll({
-        attributes: ['id', 'title', 'wasDeleted']
-    })
-    .then( swimlanes => {
-      	// NOTE: What to do with the results of the SELECT
-        res.send(swimlanes);
-    } );
-  
-});
-
-//get one user by id
-server.get('/users/:id', (req, res, next) => {
-    let userid = req.params.id;
-    User.findAll({
-        attributes: ['userid', 'username', 'firstname', 'lastname'],
-        where: {
-            userId: userid
-    }})
-    .then(users => {
-        res.send(users);
-    });
-});
-
-//create a new user
-server.post('/users/', (req, res, next) => {
-    //create an instance of a user object
-    let userid = req.body.userid;
-    let username = req.body.username;
-    let firstname = req.body.firstname;
-    let lastname = req.body.lastname;
-
-    var user = User.build({userid: userid, username: username, firstname: firstname, lastname: lastname});
-
-    //save this user to the database
-    user.save().then(() => {
-        res.end();
-    });
-});
-
-//delete a user by id
-server.del('/users/:id', (req, res, next) => {
-    let userid = req.params.id;
-    User.findOne({where: {userid: userid}}).then(usr => {
-        usr.destroy().then(usr => {
-            res.end();
-        });
-    });
-});
-
-//start the restify server
-server.listen(3000, function() {
-  console.log('%s listening at %s', server.name, server.url);
-});
-
-
-*/

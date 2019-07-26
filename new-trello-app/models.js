@@ -27,20 +27,6 @@ sql
     });
 
 
-
-
-//define the user model
-// NOTES:
-// SQL:
-// Constraint: a restriction on the data in a column
-// Primary Key: a constraint that makes the column UNIQUELY identify an object/row
-// Normalization: a set of rules to follow for designing a database
-// NOTE: Whenever you need a relationship between two tables,
-// 		 you must have a column that points to the other table
-
-// NOTE: A model is like a "template" for an object
-
-
 exports.Swimlane = function( sequelize, DataTypes ){
   let Swimlane = sql.define('swimlane', {
       id: {
@@ -60,7 +46,7 @@ exports.Swimlane = function( sequelize, DataTypes ){
   });
   
   Swimlane.associate = function( models ){
-    //Swimlane.hasMany( models.Card, { foreignKey: 'swimlaneId', sourceKey: 'id' } );
+ 
     Swimlane.hasMany( models.Card );
   }
   
@@ -93,23 +79,10 @@ exports.Card = function( sequelize, DataTypes ){
   });
  
   Card.associate = function( models ){
-    //Card.belongsTo( models.Swimlane, { foreignKey: 'swimlaneId', sourceKey: 'id' } );
+    
     Card.belongsTo( models.Swimlane );
   }
   
   return Card;
 };
 
-// Swimlane:
-// id		title			wasDeleted		
-// 1		First Swimlane	false			
-// ...
-
-// Card:
-// id		title			description		swimlaneId
-// 1		First Card		todo			1
-// 2		Second Card		todo 2			1
-// 3		Third Card		todo 3			1
-// 4		Fourth Card		todo 4			1
-// 5		Fifth Card		todo 5			1
-// ...
